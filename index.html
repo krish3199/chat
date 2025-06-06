@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Chat Assistant</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #1c92d2, #f2fcfe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone {
+      width: 375px;
+      height: 640px;
+      background: #f0f0f0;
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: #075e54;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chat {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background: url('https://i.imgur.com/5YXa4vA.png');
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #dcf8c6;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background: white;
+      border-bottom-left-radius: 0;
+    }
+
+    .input-area {
+      display: flex;
+      background: #f0f0f0;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      margin-right: 10px;
+    }
+
+    button {
+      background: #075e54;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="header">Smart Chat Assistant</div>
+  <div class="chat" id="chatBox">
+    <div class="message bot">Namaste! Main aapka assistant hoon. Kuch bhi puchhiye!</div>
+  </div>
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Type something..." onkeypress="checkEnter(event)" />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    appendMessage("user", msg);
+    input.value = "";
+    smartBotReply(msg.toLowerCase());
+  }
+
+  function checkEnter(e) {
+    if (e.key === "Enter") sendMessage();
+  }
+
+  function appendMessage(sender, text) {
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "message " + sender;
+    msgDiv.innerText = text;
+    document.getElementById("chatBox").appendChild(msgDiv);
+    document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+  }
+
+  function smartBotReply(input) {
+    let response = "";
+
+    // Keywords-based smart reply
+    if (input.includes("naam") || input.includes("name")) {
+      response = "Mera naam ChatGPT Lite Assistant hai.";
+    } else if (input.includes("kaise ho") || input.includes("how are you")) {
+      response = "Main bilkul theek hoon! Aap kaise ho?";
+    } else if (input.includes("kya kar rahe") || input.includes("what are you doing")) {
+      response = "Main aapke sawaal ka jawab de raha hoon.";
+    } else if (input.includes("love")) {
+      response = "Pyar ek khoobsurat ehsaas hai 💖";
+    } else if (input.includes("hello") || input.includes("hi") || input.includes("namaste")) {
+      response = "Namaste! Kaise madad kar sakta hoon?";
+    } else if (input.includes("bye") || input.includes("alvida")) {
+      response = "Alvida doston! Jaldi milte hain.";
+    } else {
+      // Random dynamic reply
+      const randomReplies = [
+        "Wah, yeh interesting tha!",
+        "Aap thoda aur detail me batayein?",
+        "Hmm... mujhe sochne do 🤔",
+        "Main aapki baat samajh gaya.",
+        "Mujhe laga aap yeh poochhenge 😄",
+        "Bahut accha sawaal hai!",
+        "Mujhe iske baare mein zyada pata nahi, par main seekh raha hoon."
+      ];
+      response = randomReplies[Math.floor(Math.random() * randomReplies.length)];
+    }
+
+    setTimeout(() => appendMessage("bot", response), 700);
+  }
+</script>
+
+</body>
+</html>
